@@ -4,6 +4,7 @@ import { errorMiddleware } from "./middlewares/error.js";
 import NodeCache from "node-cache";
 import {config} from "dotenv" 
 
+
 import userRoute from "./routes/user.js"
 import productRoute from "./routes/products.js";
 import orderRoute from "./routes/order.js";
@@ -11,12 +12,11 @@ import paymentRoute from "./routes/payment.js"
 import dashboardRoute from "./routes/stats.js";
 import morgan from "morgan"
 import Stripe from "stripe";
-import cors from "cors";
+const cors = require("cors");
 
 config({
     path:"./.env"
 })
-
 
 const port = process.env.PORT;
 
@@ -34,7 +34,10 @@ export const myCache = new NodeCache()
 const app = express();
 app.use(express.json()) 
 app.use(morgan("dev"))
-app.use(cors())
+app.use(cors({
+    origin: "http://localhost:5173", 
+    credentials: true
+  }));
 app.get("/", (req , res)=>{
     res.send("API Working with /api/v1");
 })
